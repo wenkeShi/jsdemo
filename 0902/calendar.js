@@ -15,11 +15,11 @@ Calendar.prototype = {
 		this.timeInput.testA = 123;
 		var parent = this;
 		this.timeInput.onclick = function(event){
-			//console.log(parent);
-			//parent.onInputClick(event,parent);
 			parent.onInputClick(event);
 		};
-		//this.onInputClick(this);
+		this.contains.onblur = function(){
+			parent.timePicker.style.display = 'none';
+		}
 		this.timePicker.className = 'time-picker';
 		this.timePicker.style.display = 'none';
 		this.showTimeBar.className = 'show-time';
@@ -29,27 +29,27 @@ Calendar.prototype = {
 		this.contains.appendChild(this.timeInput);
 		this.contains.appendChild(this.timePicker);
 		this.parentElement.appendChild(this.contains);
-		this.drawShowTimeBar(this.showTimeBar);
-		//this.drawPicker(this.timeBox);
+		
 	},
 	drawShowTimeBar: function(parentElement){
-		// this.yearInput = document.createElement("input");
-		// this.monthInput = document.createElement("input");
-		// this.dateInput = document.createElement("input");
-		var nowYear = new Date().getFullYear();
-		var contentStr ='<div class="year-input">'+nowYear+'年<i class="select-year-btn">^</i><ul class="year-select-box">';
-		
+		var parent = this;
+		var nowDate = new Date();
+		parentElement.date = nowDate;
+		var nowYear = nowDate.getFullYear();
+		var nowMonth = nowDate.getMonth();
+		var nowDay = nowDate.getDate();
+		var contentStr ='<div class="year-input"><span>'+nowYear+'年</span><i class="select-year-btn">&#xe600;</i><ul class="year-select-box" style="display : none">';
 		for(var i=0;i<150;i++){
 			contentStr+='<li>'+(i+1900)+'年</li>';
 		}
 		contentStr+='</ul></div>'
-					+'<div class="month-input"><i class="prev-month">\<</i><select>'
+					+'<div class="month-input"><i class="prev-month">&#xe601;</i><select class="months-options">'
 		for(var i=0;i<12;i++){
 			contentStr+='<option>'+(i+1)+'月</option>';
 		}
-		contentStr+='</select><i class="next-month">\></i></div>'
-					+'<div class="day-input"><i class="prev-day">\<</i><span></span>'
-					+'<i class="next-day">\></i></div>'
+		contentStr+='</select><i class="next-month">&#xe602;</i></div>'
+					+'<div class="day-input"><i class="prev-day">&#xe601;</i><select class="days-options"></select>'
+					+'<i class="next-day">&#xe602;</i></div>'
 					+'<button class="today-btn">今天</button>'
 					+'<div class="days-title">';
 					
@@ -79,13 +79,106 @@ Calendar.prototype = {
 		//this.daysTitle.innerHTML = titleStr;
 		//parentElement.appendChild(this.daysTitle);
 		parentElement.innerHTML = contentStr;
-		var selectYearBtn = parentElement.firstChild;
-		console.log(selectYearBtn);
-		selectYearBtn.onclick = function(event){
-			var ul = event.target.lastChild;
-			console.log(ul);
-			ul.style.display==='none' ? ul.style.display='inline-block':ul.style.display='none';
+		this.changeShowTimeBar(nowDate);
+
+
+
+
+		var yearInput = parentElement.firstChild;
+		//年选择框点击显示和隐藏选择列表
+		yearInput.onclick = function(){
+			//target和this的区别
+			var ul = this.lastChild;
+			ul.style.display==='none'||ul.style.display==='none'? ul.style.display='inline-block':ul.style.display='none';
 		};
+
+
+
+		//为年选择下拉框绑定点击事件
+		var yearSelectBox = yearInput.lastChild;
+		var yearLi = yearSelectBox.children;
+		for(var i=0;i<yearLi.length;i++){
+			yearLi[i].onclick = function(){
+				//console.log(parent.date);
+				this.parentElement.parentElement.firstChild.innerText = this.innerText;
+				//console.log(parent.showTimeBar.date);
+				parent.showTimeBar.date.setFullYear(this.innerText.slice(0,-1));
+				//console.log(parent.showTimeBar.date);
+				parent.changeShowTimeBar(parent.showTimeBar.date);
+			};
+		}
+
+		//为month的前后按钮添加点击事件
+		var monthInput = yearInput.nextSibling;
+		monthInput.firstChild.onclick = function(){
+			var monthOptions = this.nextSibling;
+			if(monthOptions.selectedIndex>0 ){
+				monthOptions.selectedIndex-- ;
+				parent.showTimeBar.date.setMonth(monthOptions.selectedIndex);
+				parent.changeShowTimeBar(parent.showTimeBar.date);
+			}	
+		};
+		monthInput.lastChild.onclick = function(){
+			var monthOptions = this.previousSibling;
+			if(monthOptions.selectedIndex<11){
+				monthOptions.selectedIndex++
+				parent.showTimeBar.date.setMonth(monthOptions.selectedIndex);
+				parent.changeShowTimeBar(parent.showTimeBar.date);
+			}	
+		}
+		monthInput.children[1].onchange = function(){
+			parent.showTimeBar.date.setMonth(this.selectedIndex);
+			parent.changeShowTimeBar(parent.showTimeBar.date)
+		};
+
+		//为day的前后按钮添加点击事件
+		var dayInput = monthInput.nextSibling;
+		dayInput.firstChild.onclick = function(){
+			var dayOptions = this.nextSibling;
+			if(dayOptions.selectedIndex>0){
+				dayOptions.selectedIndex--;
+				parent.showTimeBar.date.setDate(dayOptions.selectedIndex+1);
+				parent.changeShowTimeBar(parent.showTimeBar.date);
+			}
+			
+		};
+		dayInput.lastChild.onclick = function(){
+			var dayOptions = this.previousSibling;
+			if(dayOptions.selectedIndex< dayOptions.length-1){
+				dayOptions.selectedIndex++;
+				parent.showTimeBar.date.setDate(dayOptions.selectedIndex+1);
+				parent.changeShowTimeBar(parent.showTimeBar.date);
+			}
+		};
+		dayInput.children[1].onchange = function(){
+			parent.showTimeBar.date.setMonth(this.selectedIndex);
+			parent.changeShowTimeBar(parent.showTimeBar.date)
+		};
+
+		//为今天按钮绑定点击事件
+		var todayBtn = dayInput.nextSibling;
+		todayBtn.onclick = function(){
+			parent.drawPicker(new Date());
+		}
+		
+	},
+	changeShowTimeBar : function(date){
+		console.log(date);
+		var yearInput = this.showTimeBar.firstChild;
+		var monthInput = yearInput.nextSibling;
+		var dayInput = monthInput.nextSibling;
+
+		var monthsOptions = monthInput.firstChild.nextSibling;
+		monthsOptions.selectedIndex = date.getMonth();
+		var daysOptions = dayInput.firstChild.nextSibling;
+		var days = this.getDaysOfMonth(new Date(date));
+		var dayStr = '';
+		for(var i=1;i<=days;i++){
+			dayStr+='<option>'+i+'日</option>';
+		}
+		daysOptions.innerHTML = dayStr;
+		daysOptions.selectedIndex = date.getDate()-1;
+		this.drawPicker(date);
 	},
 	showYearSelect : function(){
 		console.log("showSelect");
@@ -169,7 +262,7 @@ Calendar.prototype = {
 		return Math.ceil((newTime - time) / (24 * 60 * 60 * 1000));
 	},
 	/*
-	选择框点击处理函数
+	时间显示框点击处理函数
 	*/
 	onInputClick: function(event) {  /*parent参数可以不要*/
 		//console.log(event);	
@@ -192,7 +285,8 @@ Calendar.prototype = {
 			var now = new Date();
 			//parent.drawPicker(now);
 			//Calendar.prototype.drawPicker(now);
-			this.drawPicker(now);
+			this.drawShowTimeBar(this.showTimeBar);
+			//this.drawPicker(now);
 			//drawPicker(now);
 		} else {
 			//var date = parent.parseDateFormat(value);

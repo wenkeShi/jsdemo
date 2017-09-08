@@ -7,6 +7,7 @@
 	height: 40px;
 	border : 1px solid #666;
 	border-radius: 5px;
+	text-align: center;
 }
 .time-picker{
 	width: 350px;
@@ -21,7 +22,7 @@
 	width: 70px;
 	height: 24px;
 	margin: 2px;
-	vertical-align: bottom;
+	vertical-align: middle;
 	margin :0;
 	padding: 0;
 	border : 1px solid #ccc;
@@ -29,11 +30,11 @@
 div.year-input , div.month-input, div.day-input{
 	display: inline-block;
 	width: 90px;
-	height: 40px;
+	height: 24px;
 	border : 1px solid #ccc;
 	vertical-align: bottom;
 	text-align: center;
-	line-height: 40px;
+	line-height: 24px;
 }
 .year-input{
 	position: relative;
@@ -42,16 +43,31 @@ div.year-input , div.month-input, div.day-input{
 }
 .show-time .year-select-box{
 	width: 90px;
-	height: 400px;
+	height: 350px;
 	overflow-y :auto;
 	position: absolute;
-	top: 45px;
+	top: 25px;
 	left: 0;
 	list-style : none;
 	padding: 0;
 	margin:0;
 	display: none;
 	background-color: #fff;
+}
+.show-time .year-select-box li:hover{
+	background-color: #2eb693;
+	color: #fff;
+}
+.show-time i{
+	font-family: 'iconfont';
+	font-style: normal;
+}
+.show-time i:hover{
+	cursor: pointer;
+}
+.show-time option:hover{
+	background-color: #2eb693;
+	color: #fff;
 }
 .day-title{
 	display: inline-block;
@@ -69,20 +85,20 @@ div.year-input , div.month-input, div.day-input{
 	height: 50px;
 	text-align: center;
 	line-height: 50px;
-	background-color: #f5f5dc;
+	background-color: #33bbee;
 }
 .time-box span:hover{
 	cursor: pointer;
 }
 .time-box .unshow{
-	color: #666666;
-	background-color : #ece4e4;
+	color: #9ca1a8;
+	background-color : #c5c9ce;
 }
 .time-box .show{
-	color : #F44336;
-	background-color : ##ee2211;
+	color : #fff;
+	background-color : #3378b2;
 }
 .time-box .select{
-	background-color : #F44336;
+	background-color : #de4038;
 	color: #fff;
 }
