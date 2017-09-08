@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		window.onload = function(){
+			//class : 13
+			//homework : 1
+			/*var strArray=[];
+			var counter = +prompt("输入字符串的个数");
+			while(isNaN(counter)||counter===0){
+				counter = +prompt("输入字符串的个数");
+			}
+			for(var i=0;i<counter;i++){
+				strArray[i] = prompt("字符串"+(i+1));
+			}
+			for(var i=0;i<counter-1;i++){
+				for(var j=0;j<counter-i-1;j++){
+					if(strArray[j+1]<strArray[j] ){
+						var temp = strArray[j];
+						strArray[j]=strArray[j+1];
+						strArray[j+1]=temp;
+					}
+				}
+			}
+			console.log(strArray);*/
+			////////////////////////////////////////////////////////////
+		//class : 13
+		//homework : 2
+		/*	var parStr = prompt("parentStr");
+			var childStr = prompt("chlidStr");
+			console.log(parStr);
+			console.log(childStr);
+			var index  = parStr.indexOf(childStr)
+			var counter = 0;
+			while(index!==-1){
+				counter++;
+				parStr = parStr.substr(index+childStr.length);
+				index = parStr.indexOf(childStr);
+			}
+			console.log(counter+"次");
+		*/
+		//class : 13
+		//homework : 3
+			/*var str = prompt("input something");
+			console.log(str);
+			var str2 = str.trim();
+			console.log(str2);*/
+			////////////////////////////////////////////////////////////
+		//class :13
+		//homework : 4
+			/*var mailReg = /^[0-9a-zA-Z][\w]*@[0-9a-zA-Z]+((\.com)|(\.net)|(\.xin))(\.cn)?/ig;
+			var test = prompt("input");
+			console.log(mailReg.test(test));*/
+			///////////////////////////////////////////////////////////
+		//class : 13
+		//homework : 5
+			/*var str = prompt("input");
+			var strArr = str.trim().split(" ");
+			str = '';
+			for(var i=0;i<strArr.length;i++){
+				str+=strArr[i][0].toUpperCase()+strArr[i].substr(1);
+			}
+			console.log(str);*/
+			///////////////////////////////////////////////////////////
+		//class : 13
+		//homework : 6
+			/*function getRandom(start, end){
+				if(start>end){
+					start = start +end;
+					end = start-end;
+					start = start-end;
+				}
+				var random = Math.random()*(end-start)+start;
+				return random;
+			}
+			console.log(getRandom(10,20));*/
+			///////////////////////////////////////////////////////////
+		//class :13
+		//homework : 7
+			function replaceAll(aimStr, newStr){
+				var srcStr = this.toString();
+				console.log(this);
+				var index = srcStr.indexOf(aimStr);
+				while( index !==-1){
+					srcStr = srcStr.replace(aimStr, newStr);
+					index = srcStr.indexOf(aimStr);
+				}
+				console.log("my replaceALl")
+				return srcStr;
+			}
+			String.prototype.replaceAll = replaceAll;
+			// var str="hello hello world";
+			// var newStr = "fuck";
+			// var aimStr = "hello";
+			var str = prompt("input srcStr");
+			var newStr = prompt("input newStr");
+			var aimStr = prompt("input aimStr");
+			//console.log(str.replace(aimStr,newStr));
+			console.log(str.replaceAll(aimStr, newStr));
+		}
+	</script>
+</body>
+</html>
